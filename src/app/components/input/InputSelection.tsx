@@ -19,13 +19,32 @@ const InputSelection: React.FC = () => {
 
   const handleRepChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRepType(event.target.value);
+
+    //If the current Rep/Sen selection and current state selection is not default, clear the error
+    if (
+      event.target.value !== "defaultRepSelect" &&
+      selectedState !== "defaultStateSelect"
+    ) {
+      setError(""); // Clear the error
+      return;
+    }
   };
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setselectedState(event.target.value);
+
+    //If the current Rep/Sen selection and current state selection is not default, clear the error
+    if (
+      selectedRepType !== "defaultRepSelect" &&
+      event.target.value !== "defaultStateSelect"
+    ) {
+      setError(""); // Clear the error
+      return;
+    }
   };
 
   const handleSubmit = () => {
+    //If the fields are invalid, set an error
     if (
       selectedRepType === "defaultRepSelect" ||
       selectedState === "defaultStateSelect"
@@ -33,6 +52,8 @@ const InputSelection: React.FC = () => {
       setError("Please select both a Rep/Sen and a state.");
       return;
     }
+    setError(""); // Clear the error if validation passes
+
     //If the Rep/Sen and state selections have not changed since last submit, do nothing.
     if (
       selectedRepType === prevRepTypeRef.current &&
@@ -40,8 +61,6 @@ const InputSelection: React.FC = () => {
     ) {
       return;
     }
-
-    setError(""); // Clear the error if validation passes
 
     // Update refs with the new Rep/Sen and State selections
     prevRepTypeRef.current = selectedRepType;
@@ -116,8 +135,11 @@ const InputSelection: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Error message for form validation */}
       {error && (
-        <div className="text-red-500 antialiased ml-40 mt-2">{error}</div>
+        <div className="text-red-500 antialiased text-center sm:text-left sm:ml-40 mt-2">
+          {error}
+        </div>
       )}
     </div>
   );

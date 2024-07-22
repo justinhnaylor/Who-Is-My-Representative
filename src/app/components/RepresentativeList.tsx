@@ -42,6 +42,7 @@ const RepresentativeList = () => {
           </tr>
         </thead>
         <tbody className="text-black">
+          {/* Display loading icon if loading */}
           {isLoading ? (
             <SpinningCircle />
           ) : (
